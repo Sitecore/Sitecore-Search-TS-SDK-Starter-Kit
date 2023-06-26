@@ -1,0 +1,17 @@
+{
+  "typography": {
+    "fontFamilySystem": "Lato, \"Helvetica Neue\", Helvetica, Arial, sans-serif, sans-serif"
+  },
+  "palette": {
+    "primary": {
+      "main": "#FFFFFF",
+      "light": "#f1f2f3",
+      "dark": "#0d0d0d",
+      "contrastText": "#232323"
+    },
+    "secondary": {
+      "main": "#f6f6f6"
+    }
+  }
+}
+
