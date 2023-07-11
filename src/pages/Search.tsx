@@ -29,8 +29,8 @@ const Search = (): JSX.Element => {
     <SearchPageSection>
       <div>
         <SearchPageTitle>{`Showing results for "${query}"`}</SearchPageTitle>
-        <Questions key={query} rfkId="rfkid_qa" keyphrase={query} defaultRelatedQuestions={4} />
-        <SearchResults key={query} rfkId="rfkid_7" defaultKeyphrase={query} />
+        <Questions key={`${query}-questions`} rfkId="rfkid_qa" keyphrase={query} defaultRelatedQuestions={4} />
+        <SearchResults key={`${query}-search`} rfkId="rfkid_7" defaultKeyphrase={query} />
       </div>
     </SearchPageSection>
   );
