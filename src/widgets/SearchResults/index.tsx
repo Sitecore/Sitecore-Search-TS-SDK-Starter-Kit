@@ -13,7 +13,6 @@ import { DEFAULT_IMAGE, HIGHLIGHT_DATA } from '../../data/constants';
 import useSortingOptions from '../../hooks/useSortingOptions';
 import { HighlightComponent, getDescription } from '../utils';
 import type { ArticleModel } from '../utils';
-import AnswerArea from './AnswerArea';
 import {
   AccordionFacetsStyled,
   ArticleCardRowStyled,
@@ -33,20 +32,18 @@ import {
 } from './styled';
 
 type ArticlesSearchResultsProps = {
-  title: string;
-  defaultSortType: SearchResultsStoreState['sortType'];
-  defaultPage: SearchResultsStoreState['page'];
-  defaultProductsPerPage: SearchResultsStoreState['itemsPerPage'];
+  defaultSortType?: SearchResultsStoreState['sortType'];
+  defaultPage?: SearchResultsStoreState['page'];
+  defaultProductsPerPage?: SearchResultsStoreState['itemsPerPage'];
   defaultKeyphrase: SearchResultsStoreState['keyphrase'];
 };
 
 export const SearchResults = ({
-  title = '',
   defaultSortType = 'featured_desc',
   defaultPage = 1,
   defaultKeyphrase = '',
   defaultProductsPerPage = 24,
-}: ArticlesSearchResultsProps) => {
+}: ArticlesSearchResultsProps): JSX.Element => {
   const { language } = useContext<ILanguageContext>(LanguageContext);
   const navigate = useNavigate();
   const {
@@ -63,23 +60,11 @@ export const SearchResults = ({
     queryResult: {
       isLoading,
       isFetching,
-      data: {
-        limit = 1,
-        total_item: totalItems = 0,
-        facet: facets = [],
-        content: articles = [],
-        answer: { answer, question } = {
-          answer: undefined,
-          question: undefined,
-        },
-        // eslint-disable-next-line camelcase
-        related_questions = [],
-      } = {},
+      data: { limit = 1, total_item: totalItems = 0, facet: facets = [], content: articles = [] } = {},
     },
   } = useSearchResults<ArticleModel>((query): any => {
     query
       .getRequest()
-      .setSearchRelatedQuestions({ max: 3 })
       .setSearchQueryHighlightFragmentSize(500)
       .setSearchQueryHighlightFields(['subtitle', 'description'])
       .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
@@ -116,12 +101,7 @@ export const SearchResults = ({
         </LoaderContainer>
       )}
       {!isLoading && (
-        <SearchResultsLayout.Wrapper>
-          <SearchResultsLayout.Title>{title}</SearchResultsLayout.Title>
-          {question && answer && (
-            // eslint-disable-next-line camelcase
-            <AnswerArea answer={answer} question={question} relatedQuestions={related_questions} />
-          )}
+        <>
           <SearchResultsLayout.MainArea>
             {isFetching && (
               <LoaderContainer>
@@ -362,12 +342,12 @@ export const SearchResults = ({
               </PageControlsStyled>
             </SearchResultsLayout.RightArea>
           </SearchResultsLayout.MainArea>
-        </SearchResultsLayout.Wrapper>
+        </>
       )}
     </>
   );
 };
 
-const SearchResultsWidget = widget(SearchResults as React.FC, WidgetDataType.SEARCH_RESULTS, 'content');
+const SearchResultsWidget = widget(SearchResults, WidgetDataType.SEARCH_RESULTS, 'content');
 
 export default SearchResultsWidget;

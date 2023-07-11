@@ -10,8 +10,8 @@ export const HeroGlassPanel = styled.div`
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
   color: #ffffff;
-  width: 300px;
-  padding: 2em 3em;
+  width: 25%;
+  padding: 1.5em 2em;
 
   h1 {
     font-size: 2rem;

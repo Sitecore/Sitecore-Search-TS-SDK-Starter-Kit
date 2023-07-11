@@ -83,7 +83,11 @@ With this, the SDK can change browser context and customize tracking/service res
 ### Home
 
 Route: `/` shows the main page of the site.
-This page is an example of how you can render widgets configured for the page in the CEC. The page component uses the `usePageWidgets` query hook and other recommendation widgets.
+The home page has the following configuration:
+
+- 1st section: it is a content block with a locale rule to change the content if you switch the language.
+- 2nd section: a content block with the title (Frequently asked questions) with the same rule than 1st section. It also has a `questions` widget below that only shows some questions based on a specific keyphrase.
+- 3rd section: a content block with the title (same mechanism than 2nd section) and a `search` widget with a filter applied (type = blogs).
 
 Events tracked are:
 
@@ -92,10 +96,16 @@ Events tracked are:
 ### Search
 
 Route: `/search` shows the results returned after submitting the form in the header.
+It contains:
+- a `questions` widget in case that the application recognizes that the filtering term is a question (e.g.: `What is XM Cloud` ).
+Otherwise, if it is not recognizing the search term as a question won't show anything
+- A `search results` widget that will show on any case.
 
 Events tracked are:
 
+- A `widget appear` event for the questions and answer widget if it is present.
 - A `widget appear` event for the search result widget present on the page.
+
 
 ### Content detail page
 
@@ -123,6 +133,16 @@ An example of monitoring could be debug event tracking in the CEC. The following
 
 ![](monitoring.gif)
 
+### Adding a new widget
+
+The starter kit comes with the `@sitecore-search/cli` as a dev dependency. We also added a `package.json` script as a short cut to create
+a widget based on the [templates available](https://developers.sitecorecloud.io/search-sdk/react/latest/storybook/index.html?path=/docs/widget-templates-introduction--page).
+
+For widget creation, open a terminal in the root of the project and execute the following command:
+`npm run create-widget`
+Then follow the instructions from the wizard. 
+
+More documentation for the cli can be found [here](https://www.npmjs.com/package/@sitecore-search/cli).
 
 ## Documentation
 
