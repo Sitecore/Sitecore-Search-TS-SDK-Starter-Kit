@@ -11,7 +11,7 @@ const HomeHero = (): JSX.Element => {
       <FAQBackground />
       <HTMBlockWidget rfkId="faqs_title" />
       <FAQContent>
-        <HomeHeroWidget rfkId="rfkid_7" />
+        <HomeHeroWidget rfkId="rfkid_qa" />
       </FAQContent>
     </FAQPageSection>
   );

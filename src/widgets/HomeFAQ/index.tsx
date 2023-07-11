@@ -1,22 +1,29 @@
 import React from 'react';
 
-import { WidgetDataType, useSearchResults, widget } from '@sitecore-search/react';
+import { WidgetDataType, useQuestions, useSearchResults, widget } from '@sitecore-search/react';
 
 import { HeroGlassPanel } from './styled';
 
-// Recommendation widgets can only be created via api for now.
 const HomeHeroWidget = (): JSX.Element => {
   const {
-    queryResult: { data: { related_questions: relatedQuestions = [] } = {} },
-  } = useSearchResults((query: any): any => {
-    query.getRequest().setSearchRelatedQuestions({ max: 4 });
+    queryResult: {
+      data: {
+        related_questions: relatedQuestionsResponse = [],
+        answer: { answer, question } = {
+          answer: undefined,
+          question: undefined,
+        },
+      } = {},
+    },
+  } = useQuestions((query) => {
     return {
-      keyphrase: 'What is sitecore',
+      keyphrase: 'What is XM cloud',
+      relatedQuestions: 3,
     };
   });
   return (
     <>
-      {relatedQuestions.map((a, index) => (
+      {relatedQuestionsResponse.map((a, index) => (
         <HeroGlassPanel key={`${a.question}-${index}`}>
           <h1>{a.question}</h1>
           <div>{a.answer}</div>
@@ -26,4 +33,4 @@ const HomeHeroWidget = (): JSX.Element => {
   );
 };
 
-export default widget(HomeHeroWidget, WidgetDataType.SEARCH_RESULTS, 'content');
+export default widget(HomeHeroWidget, WidgetDataType.QUESTIONS, 'content');
