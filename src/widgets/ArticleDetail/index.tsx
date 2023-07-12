@@ -15,15 +15,19 @@ import {
 } from './styled';
 
 type ArticleDetailProps = {
-  id: string;
+  id?: string;
 };
 
 export const ArticleDetailComponent = ({ id }: ArticleDetailProps): JSX.Element => {
   const {
-    context: { itemsPerPage = 1 },
-    queryResult: { isLoading, isFetching, data: { content: articles = [] } = {} },
+    queryResult: { data: { content: articles = [] } = {} },
   } = useSearchResults<ArticleModel>((query) => {
-    query.getRequest().setSearchFilter(new FilterEqual('id', id));
+    const equalFilter = new FilterEqual('id', id);
+    console.log(equalFilter.toJson());
+    query.getRequest().setSearchFilter(equalFilter);
+    return {
+      itemsPerPage: 1,
+    };
   });
   let mainArticle: ArticleModel = { id: '', title: '' };
   if (articles.length > 0) {
@@ -45,6 +49,6 @@ export const ArticleDetailComponent = ({ id }: ArticleDetailProps): JSX.Element 
   );
 };
 
-const ArticleDetailWidget = widget(ArticleDetailComponent as React.FC, WidgetDataType.SEARCH_RESULTS, 'content');
+const ArticleDetailWidget = widget(ArticleDetailComponent, WidgetDataType.SEARCH_RESULTS, 'content');
 
 export default ArticleDetailWidget;

@@ -18,7 +18,7 @@ const Home = (): JSX.Element => {
   return (
     <>
       <HTMBlockWidget rfkId="home_hero" />
-      {/* @TODO: enable this when related questions is supported on sdk <HomeFAQ /> */}
+      <HomeFAQ />
       <HighlightedArticles>
         <HighlightedWrapper>
           <HTMBlockWidget rfkId="highlight_title" />

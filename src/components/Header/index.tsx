@@ -22,7 +22,7 @@ const Header = (): JSX.Element => {
     <HeaderWrapper>
       <HeaderContentWrapper>
         <HeaderContent>
-          <a href="#" onClick={() => navigate(`${import.meta.env.VITE_SEARCH_PATH}`)} tabIndex={1}>
+          <a href="#" onClick={() => navigate(``)} tabIndex={1}>
             <img src="https://doc.sitecore.com/img/logo.svg" tabIndex={-1} alt="Sitecore Logo" />
           </a>
           <HeaderInput />
