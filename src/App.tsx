@@ -31,7 +31,7 @@ function App(): JSX.Element {
   const [theme, setTheme] = useState<string>(storageTheme);
   const [language, setLanguage] = useState<Language>(storageLanguage);
   const { style } = createTheme(getTheme(theme as string));
-  const DISCOVER_CONFIG = {
+  const SEARCH_CONFIG = {
     env: import.meta.env.VITE_SEARCH_ENV,
     customerKey: import.meta.env.VITE_SEARCH_CUSTOMER_KEY,
     apiKey: import.meta.env.VITE_SEARCH_API_KEY,
@@ -57,10 +57,9 @@ function App(): JSX.Element {
           <BrowserRouter basename={import.meta.env.VITE_SEARCH_PATH}>
             <div className="App" style={style}>
               <WidgetsProvider
-                env={DISCOVER_CONFIG.env}
-                customerKey={DISCOVER_CONFIG.customerKey}
-                apiKey={DISCOVER_CONFIG.apiKey}
-                useToken
+                env={SEARCH_CONFIG.env}
+                customerKey={SEARCH_CONFIG.customerKey}
+                apiKey={SEARCH_CONFIG.apiKey}
                 publicSuffix={true}
               >
                 <SEOWidget rfkId={'demo_search_seo'} />
