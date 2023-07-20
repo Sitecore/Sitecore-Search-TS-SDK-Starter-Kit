@@ -47,6 +47,44 @@ VITE_SEARCH_API_KEY=<API key provided in CEC>
 VITE_SEARCH_PATH=<Path for the site>. This variable is optional, use it only if the site domain also includes an extra path.
 ```
 
+### CEC configuration
+
+The account that will be used must have an initial configuration that needs to be made on CEC:
+
+#### Sources
+
+Information sources must be entered and processed in CEC, to populate the content catalog.
+
+#### Suggestion Blocks
+
+Suggestions blocks must have a field named `title_context_aware` (this needs to be configured for the `preview search widget`).
+The following picture shows a sample configuration:
+
+![Suggestion Blocks](https://developers.sitecorecloud.io/search-sdk/suggestion-blocks.png)
+
+#### Sorting options
+
+Sorting options must include `featured_desc` and `feature_asc` criteria pre-configured. The picture shows how it should look on CEC:
+
+![Sorting options](https://developers.sitecorecloud.io/search-sdk/sorting-options.png)
+
+#### Pre configured widgets
+
+The account must have the following widgets created before:
+
+| Name                                 | ID                              | Type           | Description                                                                                                                                                                                   | Used in                |
+|--------------------------------------|---------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| [Search Results Page] Search Results | `rfkid_7`                         | `Search Results` | Search results widget. Will include a grid with the results together with the avility to filter results by different facets.                                                                  | `/search`, `/detail/*` |
+| Preview Search                       | `rfkid_6`                         | `Preview Search` | It is an input that does a quick search over the content. It is included on the page header.                                                                                                  | Every page             |
+| SEO                                  | `search_seo`                      | `SEO`           | A SEO widget.                                                                                                                                                                                 | Every page             |
+| Home Hero                            | `home_hero`                      | `HTML Block`     | An html block that appears at the home hero. It has rules to show content dependending on the language selected.                                                                              | `/`                    |
+| FAQs Title                           | `faqs_title`                      | `HTML Block`     | An html block with the title of the "Frequently asked questions" section.                                                                                                                     | `/`                    |
+| Highlight Title                      | `highlight_title`                 | `HTML Block`     | An html block with the title of the "Highlighted Articles" section.                                                                                                                           | `/`                    |
+| Search Home Highlights Articles      | `search_home_highlights_articles` | `Search Results` | Search Results widget used on the "Highlighted Articles section".                                                                                                                             | `/`                    |
+| N/A                                  | `rfkid_qa`                        | `Questions`      | This widget appears on the home page, used on the "Frequently Asked Questions" or in the search page. Please ask for support if this does not appears as it is still an experimental feature (This type of widget can't be created on CEC as well). | `/` , `/search`        |
+
+Please, check our [demo website](https://developers.sitecorecloud.io/search-sdk/react/website) to check and visualize the different widgets. 
+
 ## Quick start
 
 To start using `Sitecore Search Starter Kit`:
