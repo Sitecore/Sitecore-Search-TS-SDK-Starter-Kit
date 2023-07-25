@@ -19,6 +19,7 @@ const colourStyles: StylesConfig = {
   input: (styles) => ({ ...styles, color: `${theme.vars.palette.primary.contrastText}` }),
   placeholder: (styles) => ({ ...styles, color: `${theme.vars.palette.primary.contrastText}` }),
   singleValue: (styles) => ({ ...styles, color: `${theme.vars.palette.primary.contrastText}` }),
+  menu: (styles) => ({ ...styles, color: `${theme.vars.palette.primary.dark}` }),
 };
 
 const LocaleSelector = (): JSX.Element => {
