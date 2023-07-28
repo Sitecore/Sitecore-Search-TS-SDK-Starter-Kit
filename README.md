@@ -212,7 +212,7 @@ Sitecore has adopted a [Code of Conduct](CODE_OF_CONDUCT.md) that we expect proj
 
 If you want to make changes to the code, follow these steps:
 
-1. Fork the Discover Starter Kit Repo GitHub repo.
+1. Fork the Sitecore Search Starter Kit Repo GitHub repo.
 2. Clone the forked repo to your local machine.
 3. Create a feature branch from `main` for your changes. e.g. `git checkout -b my-feature-branch`
 4. Run `npm install`
