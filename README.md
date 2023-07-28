@@ -184,25 +184,25 @@ More documentation for the cli can be found [here](https://www.npmjs.com/package
 
 ## Documentation
 
-Discover documentation is written for both developers and [business users](https://doc.sitecore.com/discover/en/users/discover-user-guide/index-en.html?contextId=introduction).
+Sitecore Search SDK documentation is written for both developers and [business users](https://developers.sitecorecloud.io/search-sdk/react/1.x/storybook/index.html?path=/story/introduction-introduction--page).
 
 JS SDK for React documentation includes:
-* [Components, functions, and query hooks](https://doc.sitecore.com/discover/en/developers/discover-js-sdk-for-react/index-en.html?contextId=introduction).
-* [Templates and ui primitives](https://developers.sitecorecloud.io/discover-sdk/react/1.x-alpha/storybook/index.html).
+* [Components, functions, and query hooks](https://developers.sitecorecloud.io/search-sdk/react/1.x/storybook/index.html?path=/story/sdk-hooks-introduction--page).
+* [Templates and ui primitives](https://developers.sitecorecloud.io/search-sdk/react/1.x/storybook/index.html).
 
-For data feeds and URL configuration, refer to the [Discover developer guide](https://doc.sitecore.com/discover/en/developers/discover-js-sdk-for-react/index-en.html?contextId=introduction).
+For data feeds and URL configuration, refer to the [Search developer guide](https://developers.sitecorecloud.io/search-sdk/react/1.x/storybook/index.html?path=/story/introduction-introduction--page).
 
 ## Contributions
 
-We are very grateful to the community for contributing bug fixes and improvements. We welcome all efforts to evolve and improve the Discover Starter Kit. The following sections explain how you can participate in these efforts.
+We are very grateful to the community for contributing bug fixes and improvements. We welcome all efforts to evolve and improve the Search Starter Kit. The following sections explain how you can participate in these efforts.
 
 ### Bug reports
 
-You can use GitHub to submit [bug reports](https://github.com/Sitecore/Sitecore-Search-JS-SDK-Starter-kit/issues/new?template=bug_report.md) for Discover Starter Kit.
+You can use GitHub to submit [bug reports](https://github.com/Sitecore/Sitecore-Search-TS-SDK-Starter-kit/issues/new?template=bug_report.md) for Search Starter Kit.
 
 ### Feature requests
 
-You can use GitHub to submit [feature requests](https://github.com/Sitecore/Discover-JS-SDK-Starter-kit/issues/new?template=feature_request.md) for Discover Starter Kit.
+You can use GitHub to submit [feature requests](https://github.com/Sitecore/Sitecore-Search-TS-SDK-Starter-kit/issues/new?template=feature_request.md) for Search Starter Kit.
 
 
 ### Code of Conduct
@@ -217,6 +217,6 @@ If you want to make changes to the code, follow these steps:
 3. Create a feature branch from `main` for your changes. e.g. `git checkout -b my-feature-branch`
 4. Run `npm install`
 5. Run `npm run dev` (to preview your changes locally)
-6. Commit, push to your remote fork of the Discover Starter Kit repo, then open a pull request (PR) to the `main` branch of the Developer Portal repo.
+6. Commit, push to your remote fork of the Search Starter Kit repo, then open a pull request (PR) to the `main` branch of the Developer Portal repo.
 
 Your changes will be reviewed and merged if appropriate.
