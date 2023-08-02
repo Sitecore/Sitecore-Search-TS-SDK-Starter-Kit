@@ -5,6 +5,8 @@ import { HTMBlockWidget } from '@sitecore-search/react';
 
 import { HighlightedWrapper, PageSection } from '../components/Common';
 import HomeFAQ from '../components/HomeFAQ';
+import { PAGE_EVENTS_HOME } from '../data/constants';
+import withPageTracking from '../hocs/withPageTracking';
 import HomeHighlighted from '../widgets/HomeHighlighted';
 
 const HighlightedArticles = styled(PageSection)`
@@ -29,4 +31,4 @@ const Home = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default withPageTracking(Home, PAGE_EVENTS_HOME);

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { theme } from '@sitecore-search/ui';
 
 import { PageSection } from '../components/Common';
+import { PAGE_EVENTS_SEARCH } from '../data/constants';
+import withPageTracking from '../hocs/withPageTracking';
 import Questions from '../widgets/Questions';
 import SearchResults from '../widgets/SearchResults';
 
@@ -36,4 +38,4 @@ const Search = (): JSX.Element => {
   );
 };
 
-export default Search;
+export default withPageTracking(Search, PAGE_EVENTS_SEARCH);
