@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { SearchResultsInitialState } from '@sitecore-search/react';
 import { FilterEqual, WidgetDataType, useSearchResults, widget } from '@sitecore-search/react';
 
 import { DEFAULT_IMAGE } from '../../data/constants';
@@ -18,23 +19,27 @@ type ArticleDetailProps = {
   id?: string;
 };
 
+type InitialState = SearchResultsInitialState<'itemsPerPage'>;
+
 export const ArticleDetailComponent = ({ id }: ArticleDetailProps): JSX.Element => {
   const {
+    widgetRef,
     queryResult: { data: { content: articles = [] } = {} },
-  } = useSearchResults<ArticleModel>((query) => {
-    const equalFilter = new FilterEqual('id', id);
-    console.log(equalFilter.toJson());
-    query.getRequest().setSearchFilter(equalFilter);
-    return {
+  } = useSearchResults<ArticleModel, InitialState>({
+    query: (query) => {
+      const equalFilter = new FilterEqual('id', id);
+      query.getRequest().setSearchFilter(equalFilter);
+    },
+    state: {
       itemsPerPage: 1,
-    };
+    },
   });
   let mainArticle: ArticleModel = { id: '', title: '' };
   if (articles.length > 0) {
     mainArticle = articles[0];
   }
   return (
-    <DetailWrapper>
+    <DetailWrapper ref={widgetRef}>
       <DetailHeader>
         <DetailHeaderContent>
           <DetailHeaderTitle>{mainArticle.title}</DetailHeaderTitle>

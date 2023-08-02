@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, GridIcon, ListBulletIcon } from '@radix-ui/react-icons';
 import { Presence } from '@radix-ui/react-presence';
-import type { SearchResultsStoreState } from '@sitecore-search/react';
+import type { SearchResultsInitialState, SearchResultsStoreState } from '@sitecore-search/react';
 import { WidgetDataType, useSearchResults, useSearchResultsSelectedFacets, widget } from '@sitecore-search/react';
 import { AccordionFacets, CardViewSwitcher, Pagination } from '@sitecore-search/ui';
 
@@ -34,19 +34,22 @@ import {
 type ArticlesSearchResultsProps = {
   defaultSortType?: SearchResultsStoreState['sortType'];
   defaultPage?: SearchResultsStoreState['page'];
-  defaultProductsPerPage?: SearchResultsStoreState['itemsPerPage'];
+  defaultItemsPerPage?: SearchResultsStoreState['itemsPerPage'];
   defaultKeyphrase: SearchResultsStoreState['keyphrase'];
 };
+
+type InitialState = SearchResultsInitialState<'itemsPerPage' | 'sortType' | 'page' | 'keyphrase'>;
 
 export const SearchResults = ({
   defaultSortType = 'featured_desc',
   defaultPage = 1,
   defaultKeyphrase = '',
-  defaultProductsPerPage = 24,
+  defaultItemsPerPage = 24,
 }: ArticlesSearchResultsProps): JSX.Element => {
   const { language } = useContext<ILanguageContext>(LanguageContext);
   const navigate = useNavigate();
   const {
+    widgetRef,
     actions: {
       onResultsPerPageChange,
       onPageNumberChange,
@@ -56,25 +59,27 @@ export const SearchResults = ({
       onFacetClick,
       onClearFilters,
     },
-    context: { sortType = defaultSortType, page = defaultPage, itemsPerPage = defaultProductsPerPage },
+    state: { sortType, page, itemsPerPage },
     queryResult: {
       isLoading,
       isFetching,
       data: { limit = 1, total_item: totalItems = 0, facet: facets = [], content: articles = [] } = {},
     },
-  } = useSearchResults<ArticleModel>((query): any => {
-    query
-      .getRequest()
-      .setSearchQueryHighlightFragmentSize(500)
-      .setSearchQueryHighlightFields(['subtitle', 'description'])
-      .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
-      .setSearchQueryHighlightPostTag(HIGHLIGHT_DATA.post);
-    return {
-      sortType,
-      page,
-      itemsPerPage,
+  } = useSearchResults<ArticleModel, InitialState>({
+    query: (query): any => {
+      query
+        .getRequest()
+        .setSearchQueryHighlightFragmentSize(500)
+        .setSearchQueryHighlightFields(['subtitle', 'description'])
+        .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
+        .setSearchQueryHighlightPostTag(HIGHLIGHT_DATA.post);
+    },
+    state: {
+      sortType: defaultSortType,
+      page: defaultPage,
+      itemsPerPage: defaultItemsPerPage,
       keyphrase: defaultKeyphrase,
-    };
+    },
   });
   const totalPages = Math.ceil(totalItems / (itemsPerPage !== 0 ? itemsPerPage : 1));
   const selectedFacetsFromApi = useSearchResultsSelectedFacets();
@@ -102,7 +107,7 @@ export const SearchResults = ({
       )}
       {!isLoading && (
         <>
-          <SearchResultsLayout.MainArea>
+          <SearchResultsLayout.MainArea ref={widgetRef}>
             {isFetching && (
               <LoaderContainer>
                 <Presence present={true}>
@@ -284,7 +289,7 @@ export const SearchResults = ({
                 <div>
                   <label>Results Per Page</label>
                   <SelectStyled.Root
-                    defaultValue={String(defaultProductsPerPage)}
+                    defaultValue={String(defaultItemsPerPage)}
                     onValueChange={(v) => onResultsPerPageChange({ numItems: Number(v) })}
                   >
                     <SelectStyled.Trigger>

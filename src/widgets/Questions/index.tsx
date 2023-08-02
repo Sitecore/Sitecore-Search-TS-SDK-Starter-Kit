@@ -33,6 +33,7 @@ const FrequentQuestion = ({ question, answer }: { question: string; answer: stri
 };
 const QuestionsComponent = ({ keyphrase = '', defaultRelatedQuestions = 4 }): JSX.Element => {
   const {
+    widgetRef,
     queryResult: {
       data: {
         related_questions: relatedQuestionsResponse = [],
@@ -42,16 +43,16 @@ const QuestionsComponent = ({ keyphrase = '', defaultRelatedQuestions = 4 }): JS
         },
       } = {},
     },
-  } = useQuestions((query) => {
-    return {
+  } = useQuestions({
+    state: {
       keyphrase,
       relatedQuestions: defaultRelatedQuestions,
-    };
+    },
   });
   return (
     <>
       {answer && question && (
-        <AnswerAreaWrapper>
+        <AnswerAreaWrapper ref={widgetRef}>
           <PrimaryQuestionBox>
             <PrimaryQuestionBoxTitle>{question}</PrimaryQuestionBoxTitle>
             <PrimaryQuestionBoxAnswer>{answer}</PrimaryQuestionBoxAnswer>

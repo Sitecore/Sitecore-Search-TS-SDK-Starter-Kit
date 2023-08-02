@@ -6,6 +6,7 @@ import { HeroGlassPanel } from './styled';
 
 const HomeHeroWidget = (): JSX.Element => {
   const {
+    widgetRef,
     queryResult: {
       data: {
         related_questions: relatedQuestionsResponse = [],
@@ -15,16 +16,16 @@ const HomeHeroWidget = (): JSX.Element => {
         },
       } = {},
     },
-  } = useQuestions((query) => {
-    return {
+  } = useQuestions({
+    state: {
       keyphrase: 'What is XM cloud',
       relatedQuestions: 3,
-    };
+    },
   });
   return (
     <>
       {relatedQuestionsResponse.map((a, index) => (
-        <HeroGlassPanel key={`${a.question}-${index}`}>
+        <HeroGlassPanel key={`${a.question}-${index}`} ref={widgetRef}>
           <h1>{a.question}</h1>
           <div>{a.answer}</div>
         </HeroGlassPanel>

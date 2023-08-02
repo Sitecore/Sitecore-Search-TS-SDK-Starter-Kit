@@ -11,8 +11,8 @@
     "create-widget": "sc-search new-widget"
   },
   "dependencies": {
-    "@sitecore-search/react": "^1.2.0",
-    "@sitecore-search/ui": "^1.2.0",
+    "@sitecore-search/react": "^2.0.0-alpha.1",
+    "@sitecore-search/ui": "^2.0.0-alpha.1",
     "decompress": "^4.2.1",
     "decompress-targz": "^4.1.1",
     "eslint-config-standard": "^17.0.0",
@@ -30,7 +30,7 @@
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
-    "@sitecore-search/cli": "^1.2.0",
+    "@sitecore-search/cli": "^2.0.0-alpha.1",
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
