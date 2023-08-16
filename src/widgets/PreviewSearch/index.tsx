@@ -137,14 +137,7 @@ export const PreviewSearchComponent = ({ defaultProductsPerPage = 6 }: { default
     queryResult: {
       isFetching,
       isLoading,
-      data: {
-        content: articles = [],
-        suggestion: {
-          //title_suggester: articleSuggestions = [],
-          //title_context_aware: trendingCategorySuggestions = [],
-          title_context_aware: articleSuggestions = [],
-        } = {},
-      } = {},
+      data: { content: articles = [], suggestion: { title_context_aware: articleSuggestions = [] } = {} } = {},
     },
   } = usePreviewSearch<ArticleModel>((query): any => {
     query
@@ -154,11 +147,7 @@ export const PreviewSearchComponent = ({ defaultProductsPerPage = 6 }: { default
       .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
       .setSearchQueryHighlightPostTag(HIGHLIGHT_DATA.post);
     return {
-      suggestionsList: [
-        //{ suggestion: 'title_suggester', max: 10 },
-        //{ suggestion: 'title_context_aware', max: 10 },
-        { suggestion: 'title_context_aware', max: 10 },
-      ],
+      suggestionsList: [{ suggestion: 'title_context_aware', max: 10 }],
       itemsPerPage,
     };
   });

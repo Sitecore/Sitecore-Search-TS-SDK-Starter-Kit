@@ -5,6 +5,7 @@ import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { ThemeContext } from '../../contexts/theme-context';
 import type { IThemeContext } from '../../contexts/theme-context';
 import HeaderInput from '../HeaderInput';
+import Logo from '../Icons/Logo';
 import LocaleSelector from '../LocaleSelector';
 import { HeaderContent, HeaderContentWrapper, HeaderWrapper } from './styled';
 
@@ -23,7 +24,7 @@ const Header = (): JSX.Element => {
       <HeaderContentWrapper>
         <HeaderContent>
           <a href="#" onClick={() => navigate(``)} tabIndex={1}>
-            <img src="https://doc.sitecore.com/img/logo.svg" tabIndex={-1} alt="Sitecore Logo" />
+            <Logo />
           </a>
           <HeaderInput />
           <DarkModeSwitch checked={theme === 'dark'} onChange={toggleDarkMode} />
