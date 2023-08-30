@@ -2,7 +2,7 @@ import { useSearchResults } from '@sitecore-search/react';
 
 const useSortingOptions = (): any => {
   const {
-    context: { sortType },
+    state: { sortType },
     queryResult: { data: { sort: { choices: sortChoices = [] } = {} } = {} } = {},
   } = useSearchResults();
   let currentOption = -1;
