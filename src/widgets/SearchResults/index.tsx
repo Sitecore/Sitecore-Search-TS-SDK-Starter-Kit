@@ -86,7 +86,7 @@ export const SearchResultsWithLayoutOptionComponent = ({
       keyphrase: defaultKeyphrase,
     },
   });
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const totalPages = Math.ceil(totalItems / (itemsPerPage !== 0 ? itemsPerPage : 1));
   const selectedSortIndex = sortChoices.findIndex((s) => s.name === sortType);
   const selectedFacetsFromApi = useSearchResultsSelectedFacets();
   const defaultCardView = CardViewSwitcher.CARD_VIEW_LIST;
