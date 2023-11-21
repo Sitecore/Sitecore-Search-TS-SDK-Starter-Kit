@@ -1,152 +1,33 @@
-import React, { useCallback, useState } from 'react';
-import type { SyntheticEvent } from 'react';
+import type { ChangeEvent, SyntheticEvent } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type {
-  ActionPropPayload,
-  ItemActionPayload,
-  ItemClickedAction,
-  PreviewSearchInitialState,
-  SearchResponseSuggestion,
-} from '@sitecore-search/react';
-import {
-  PreviewSearchSuggestionQuery,
-  SearchResultsInitialState,
-  WidgetDataType,
-  usePreviewSearch,
-  widget,
-} from '@sitecore-search/react';
-import { Presence } from '@sitecore-search/ui';
-import type { PreviewSearchActionProps } from '@sitecore-search/widgets';
+import type { PreviewSearchInitialState } from '@sitecore-search/react';
+import { WidgetDataType, usePreviewSearch, widget } from '@sitecore-search/react';
+import { Presence, PreviewSearch } from '@sitecore-search/ui';
 
 import { DEFAULT_IMAGE, HIGHLIGHT_DATA } from '../../data/constants';
-import { HighlightComponent, getDescription } from '../utils';
 import type { ArticleModel } from '../utils';
-import { ArticleCardStyled, LoaderAnimation, LoaderContainer, NavMenuStyled, SearchGroupHeadingStyled } from './styled';
+import { HighlightComponent, getDescription } from '../utils';
+import {
+  ArticleCardStyled,
+  LoaderAnimation,
+  LoaderContainer,
+  PreviewSearchStyled,
+  SearchGroupHeadingStyled,
+} from './styled';
 
-const Articles = ({
-  loading = false,
-  articles,
-  onItemClick,
-}: {
-  loading?: boolean;
-  articles: Array<ArticleModel>;
-  onItemClick: PreviewSearchActionProps['onItemClick'];
-}) => {
-  const navigate = useNavigate();
-  return (
-    <NavMenuStyled.Grid>
-      <Presence present={loading}>
-        <LoaderContainer>
-          <LoaderAnimation
-            aria-busy={loading}
-            aria-hidden={!loading}
-            focusable="false"
-            role="progressbar"
-            viewBox="0 0 20 20"
-          >
-            <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
-          </LoaderAnimation>
-        </LoaderContainer>
-      </Presence>
-      <NavMenuStyled.SubList>
-        {!loading &&
-          articles.map((article, index) => (
-            <NavMenuStyled.SubItem key={`${article.id}@${article.source_id}`}>
-              <NavMenuStyled.Link
-                title={article.title}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onItemClick({ id: article.id || '', index });
-                  navigate(`/detail/${article.id}`);
-                }}
-              >
-                <ArticleCardStyled.Root>
-                  <ArticleCardStyled.ImageWrapper>
-                    <ArticleCardStyled.Image src={article.image_url || article.image || DEFAULT_IMAGE} />
-                  </ArticleCardStyled.ImageWrapper>
-                  <ArticleCardStyled.Name>
-                    <HighlightComponent
-                      text={getDescription(article, 'title')}
-                      preSeparator={HIGHLIGHT_DATA.pre}
-                      postSeparator={HIGHLIGHT_DATA.post}
-                      highlightElement={HIGHLIGHT_DATA.highlightTag}
-                    />
-                  </ArticleCardStyled.Name>
-                </ArticleCardStyled.Root>
-              </NavMenuStyled.Link>
-            </NavMenuStyled.SubItem>
-          ))}
-      </NavMenuStyled.SubList>
-    </NavMenuStyled.Grid>
-  );
-};
+type InitialState = PreviewSearchInitialState<'itemsPerPage' | 'suggestionsList'>;
 
-const Group = ({
-  groupTitle,
-  groupId,
-  filterAttribute,
-  articles,
-  activeItem,
-  onActiveItem,
-  onItemClick,
-  resetItem,
-}: {
-  groupTitle: string;
-  groupId: string;
-  filterAttribute?: string;
-  articles: Array<SearchResponseSuggestion>;
-  activeItem: string;
-  onActiveItem: (arg: string) => void;
-  onItemClick: (payload: ActionPropPayload<ItemClickedAction>) => void;
-  resetItem: () => void;
-}) => {
-  const navigate = useNavigate();
-  return (
-    <>
-      <SearchGroupHeadingStyled>{groupTitle}</SearchGroupHeadingStyled>
-      {articles.map(({ text }) => (
-        <NavMenuStyled.Group value={getGroupId(groupId, text)} key={text}>
-          <NavMenuStyled.Trigger
-            onMouseOver={(e) => {
-              const target = e.target as HTMLLinkElement;
-              target.focus();
-            }}
-            onClick={() => {
-              resetItem();
-              navigate(`/search?q=${text}`);
-            }}
-            onFocus={() => onActiveItem(getGroupId(groupId, text))}
-          >
-            {text}
-          </NavMenuStyled.Trigger>
-          <PreviewSearchSuggestionQuery<ArticleModel>
-            active={activeItem === getGroupId(groupId, text)}
-            value={text}
-            filterAttribute={filterAttribute}
-          >
-            {({ queryResult: { isFetching, data: { content: articles = [] } = {} } }) => (
-              <Articles loading={isFetching} articles={articles} onItemClick={onItemClick} />
-            )}
-          </PreviewSearchSuggestionQuery>
-        </NavMenuStyled.Group>
-      ))}
-    </>
-  );
-};
-
-const getGroupId = (name: string, value: string) => `${name}@${value}`;
-
-type InitialState = PreviewSearchInitialState<'itemsPerPage' | 'keyphrase' | 'suggestionsList'>;
-export const PreviewSearchComponent = ({ defaultProductsPerPage = 6 }: { defaultProductsPerPage: number }) => {
+export const PreviewSearchNewComponent = ({ defaultItemsPerPage = 8 }) => {
   const {
     widgetRef,
-    state: { keyphrase },
     actions: { onItemClick, onKeyphraseChange },
+    queryResult,
     queryResult: {
       isFetching,
       isLoading,
-      data: { content: articles = [], suggestion: { title_context_aware: articleSuggestions = [] } = {} } = {},
+      data: { suggestion: { title_context_aware: articleSuggestions = [] } = {} } = {},
     },
   } = usePreviewSearch<ArticleModel, InitialState>({
     query: (query): any => {
@@ -159,26 +40,17 @@ export const PreviewSearchComponent = ({ defaultProductsPerPage = 6 }: { default
     },
     state: {
       suggestionsList: [{ suggestion: 'title_context_aware', max: 10 }],
-      itemsPerPage: defaultProductsPerPage,
-      keyphrase: '',
+      itemsPerPage: defaultItemsPerPage,
     },
   });
 
   const loading = isLoading || isFetching;
-  const [activeItem, setActiveItem] = useState('defaultArticlesResults');
-  const [value, setValue] = useState('');
-  const onValueChange = (newValue: string) => {
-    setValue(newValue);
-  };
-
   const keyphraseHandler = useCallback(
-    (event: KeyboardEvent) => {
-      const target = event.target as HTMLInputElement;
-      if (keyphrase !== target.value) {
-        onKeyphraseChange({ keyphrase: target.value });
-      }
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const target = event.target;
+      onKeyphraseChange({ keyphrase: target.value });
     },
-    [onKeyphraseChange, keyphrase],
+    [onKeyphraseChange],
   );
 
   const navigate = useNavigate();
@@ -187,69 +59,106 @@ export const PreviewSearchComponent = ({ defaultProductsPerPage = 6 }: { default
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const target = e.target.query as HTMLInputElement;
-    setValue('');
     navigate(`/search?q=${target.value}`);
+    target.value = '';
   };
-
   return (
-    <>
-      <NavMenuStyled.Root onValueChange={onValueChange} value={value}>
-        <NavMenuStyled.MainList>
-          <NavMenuStyled.MainListItem>
-            <form onSubmit={handleSubmit}>
-              <NavMenuStyled.InputTrigger
-                name="query"
-                onKeyUp={keyphraseHandler}
-                onFocus={() => {
-                  if (keyphrase.length > 0) {
-                    setActiveItem('defaultArticlesResults');
-                  }
-                }}
-                autoComplete="off"
-                placeholder="Type to search..."
-              />
-            </form>
-            <NavMenuStyled.MainContent>
-              <Presence present={loading}>
-                <LoaderContainer>
-                  <LoaderAnimation
-                    aria-busy={loading}
-                    aria-hidden={!loading}
-                    focusable="false"
-                    role="progressbar"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
-                  </LoaderAnimation>
-                </LoaderContainer>
-              </Presence>
-              {!loading && (
-                <NavMenuStyled.SubContent orientation="vertical" value={activeItem} ref={widgetRef}>
-                  <NavMenuStyled.GroupList>
-                    {articleSuggestions.length > 0 && (
-                      <Group
-                        groupTitle="Suggestions"
-                        groupId="keyphrase"
-                        articles={articleSuggestions}
-                        onItemClick={onItemClick}
-                        activeItem={activeItem}
-                        onActiveItem={setActiveItem}
-                        resetItem={() => setValue('')}
-                      />
-                    )}
-                    <NavMenuStyled.DefaultGroup value="defaultArticlesResults" key="defaultArticlesResults">
-                      <NavMenuStyled.DefaultTrigger aria-hidden />
-                      <Articles articles={articles} onItemClick={onItemClick} />
-                    </NavMenuStyled.DefaultGroup>
-                  </NavMenuStyled.GroupList>
-                </NavMenuStyled.SubContent>
+    <PreviewSearchStyled.Root>
+      <form onSubmit={handleSubmit}>
+        <PreviewSearchStyled.Input
+          onChange={keyphraseHandler}
+          autoComplete="off"
+          placeholder="Type to search..."
+          name="query"
+        />
+      </form>
+      <PreviewSearchStyled.Content ref={widgetRef}>
+        <Presence present={loading}>
+          <LoaderContainer>
+            <LoaderAnimation
+              aria-busy={loading}
+              aria-hidden={!loading}
+              focusable="false"
+              role="progressbar"
+              viewBox="0 0 20 20"
+            >
+              <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
+            </LoaderAnimation>
+          </LoaderContainer>
+        </Presence>
+        <Presence present={!loading}>
+          <>
+            {articleSuggestions.length > 0 && (
+              <PreviewSearchStyled.Suggestions>
+                {articleSuggestions.length > 0 && (
+                  <PreviewSearchStyled.SuggestionsGroup id="article_name_context_aware">
+                    <SearchGroupHeadingStyled>Suggestions</SearchGroupHeadingStyled>
+                    {articleSuggestions.map(({ text }) => (
+                      <PreviewSearchStyled.SuggestionTrigger id={text} key={text} asChild>
+                        <a
+                          onClick={() => {
+                            navigate(`/search?q=${text}`);
+                          }}
+                        >
+                          {text}
+                        </a>
+                      </PreviewSearchStyled.SuggestionTrigger>
+                    ))}
+                  </PreviewSearchStyled.SuggestionsGroup>
+                )}
+              </PreviewSearchStyled.Suggestions>
+            )}
+            <PreviewSearch.Results defaultQueryResult={queryResult}>
+              {({ isFetching: loading, data: { content: articles = [] } = {} }) => (
+                <PreviewSearchStyled.Items data-loading={loading}>
+                  <Presence present={loading}>
+                    <LoaderContainer>
+                      <LoaderAnimation
+                        aria-busy={loading}
+                        aria-hidden={!loading}
+                        focusable="false"
+                        role="progressbar"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
+                      </LoaderAnimation>
+                    </LoaderContainer>
+                  </Presence>
+                  {!loading &&
+                    articles.map((article, index) => (
+                      <PreviewSearchStyled.Item key={article.id} asChild>
+                        <PreviewSearchStyled.Link
+                          href={article.url}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onItemClick({ id: article.id, index, sourceId: article.source_id });
+                            navigate(`/detail/${article.id}`);
+                          }}
+                        >
+                          <ArticleCardStyled.Root>
+                            <ArticleCardStyled.ImageWrapper>
+                              <ArticleCardStyled.Image src={article.image_url || article.image || DEFAULT_IMAGE} />
+                            </ArticleCardStyled.ImageWrapper>
+                            <ArticleCardStyled.Name>
+                              <HighlightComponent
+                                text={getDescription(article, 'title')}
+                                preSeparator={HIGHLIGHT_DATA.pre}
+                                postSeparator={HIGHLIGHT_DATA.post}
+                                highlightElement={HIGHLIGHT_DATA.highlightTag}
+                              />
+                            </ArticleCardStyled.Name>
+                          </ArticleCardStyled.Root>
+                        </PreviewSearchStyled.Link>
+                      </PreviewSearchStyled.Item>
+                    ))}
+                </PreviewSearchStyled.Items>
               )}
-            </NavMenuStyled.MainContent>
-          </NavMenuStyled.MainListItem>
-        </NavMenuStyled.MainList>
-      </NavMenuStyled.Root>
-    </>
+            </PreviewSearch.Results>
+          </>
+        </Presence>
+      </PreviewSearchStyled.Content>
+    </PreviewSearchStyled.Root>
   );
 };
-const PreviewSearchWidget = widget(PreviewSearchComponent as React.FC, WidgetDataType.PREVIEW_SEARCH, 'content');
-export default PreviewSearchWidget;
+const PreviewSearchNewWidget = widget(PreviewSearchNewComponent, WidgetDataType.PREVIEW_SEARCH, 'content');
+export default PreviewSearchNewWidget;

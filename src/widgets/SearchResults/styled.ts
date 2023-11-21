@@ -7,11 +7,11 @@ import {
   ArticleCard,
   CardViewSwitcher,
   FacetItem,
-  Pagination,
+  Pagination, SearchResultsAccordionFacets,
   Select,
   SortSelect,
-  theme,
-} from '@sitecore-search/ui';
+  theme
+} from "@sitecore-search/ui";
 
 const ArticleCardRowRootStyled = styled(ArticleCard.Root)`
   box-sizing: border-box;
@@ -495,7 +495,7 @@ const AccordionFacetsFacetStyled = styled(AccordionFacets.Facet)`
   border-bottom: solid 1px ${theme.vars.palette.grey['400']};
 `;
 
-const AccordionFacetsRootStyled = styled(AccordionFacets.Root)``;
+const AccordionFacetsRootStyled = styled(SearchResultsAccordionFacets)``;
 
 export const AccordionFacetsStyled = {
   Trigger: AccordionTriggerStyled,
