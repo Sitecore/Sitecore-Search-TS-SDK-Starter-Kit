@@ -132,7 +132,7 @@ export const PreviewSearchNewComponent = ({ defaultItemsPerPage = 8 }) => {
                           onClick={(e) => {
                             e.preventDefault();
                             onItemClick({ id: article.id, index, sourceId: article.source_id });
-                            // add redirection or any action
+                            navigate(`/detail/${article.id}`);
                           }}
                         >
                           <ArticleCardStyled.Root>
