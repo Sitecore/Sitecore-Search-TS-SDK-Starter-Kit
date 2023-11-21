@@ -7,7 +7,8 @@
       "main": "#2d333b",
       "light": "#f1f2f3",
       "dark": "#0d0d0d",
-      "contrastText": "#f1f2f3"
+      "contrastText": "#f1f2f3",
+      "suggestionsBackground": "#232424"
     },
     "secondary": {
       "main": "#22272e"

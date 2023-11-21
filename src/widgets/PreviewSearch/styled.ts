@@ -1,254 +1,182 @@
 import styled, { keyframes } from 'styled-components';
 
-import { ArticleCard, NavMenu, theme } from '@sitecore-search/ui';
+import { ArticleCard, PreviewSearch, theme } from '@sitecore-search/ui';
 
-const NavMenuRootStyled = styled(NavMenu.Root)`
+export const PreviewSearchInput = styled(PreviewSearch.Input)`
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  padding: var(--sdc-spacing-xs);
+  height: 40px;
+  outline: none;
+  font-size: 24px;
+  color: var(--sdc-palette-primary-contrastText);
   width: 90%;
-  font-family: ${theme.vars.typography?.fontFamilySystem};
+  font-family: var(--sdc-typography-fontFamilySystem);
   background: var(--sdc-palette-secondary-main);
   margin: auto;
 `;
 
-const NavMenuMainListStyled = styled(NavMenu.List)`
-  all: unset;
-  list-style: none;
+export const PreviewSearchContent = styled(PreviewSearch.Content)`
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  width: var(--radix-popover-trigger-width);
+  max-height: var(--radix-popover-content-available-height);
   display: flex;
-  height: 100%;
-  text-align: left;
-  &[data-orientation='vertical'] {
-    flex-direction: column;
-    width: 32%;
-    overflow-y: auto;
-  }
-`;
-
-const NavMenuMainListItemStyled = styled(NavMenu.Item)`
-  width: 100%;
-`;
-
-const NavMenuGroupListStyled = styled(NavMenuMainListStyled)`
-  width: 100%;
-`;
-
-const NavMenuMainContentStyled = styled(NavMenu.Content)`
-  background: ${theme.vars.palette?.secondary?.main};
-  box-shadow: 5px 5px 5px 0 ${theme.vars.palette?.grey?.['400']};
-  display: inline-block;
   justify-content: center;
-  left: 0;
-  height: 450px;
+  height: 400px;
   padding-top: 0;
-  position: absolute;
-  top: 40px;
-  width: 100%;
+  font-family: ${theme.vars.typography.fontFamilySystem};
 
-  @keyframe enterFromLeft {
+  @keyframes slide-up-and-fade {
     from {
-      transform: translate3d(-200px, 0, 0);
       opacity: 0;
+      transform: translateY(2px);
     }
     to {
-      transform: translate3d(0, 0, 0);
       opacity: 1;
-    }
-  }
-  @keyframe enterFromRight {
-    from {
-      transform: translate3d(200px, 0, 0);
-      opacity: 0;
-    }
-    to {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-  }
-  @keyframe exitToLeft {
-    from {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-    to {
-      transform: translate3d(-200px, 0, 0);
-      opacity: 0;
+      transform: translateY(0);
     }
   }
 
-  @keyframe exitToRight {
+  @keyframes slide-right-and-fade {
     from {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
+      opacity: 0;
+      transform: translateX(-2px);
     }
     to {
-      transform: translate3d(200px, 0, 0);
-      opacity: 0;
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
-  &[data-motion='from-start'] {
-    animation: enterFromLeft 250ms ease;
-  }
-  &[data-motion='from-end'] {
-    animation: enterFromRight 250ms ease;
+  @keyframes slide-down-and-fade {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  &[data-motion='to-start'] {
-    animation: exitToLeft 250ms ease;
+  @keyframes slide-left-and-fade {
+    from {
+      opacity: 0;
+      transform: translateX(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
-  &[data-motion='to-end'] {
-    animation: exitToRight 250ms ease;
+
+  &[data-state='open'][data-side='top'] {
+    animation-name: slide-down-and-fade;
+  }
+
+  &[data-state='open'][data-side='right'] {
+    animation-name: slide-left-and-fade;
+  }
+
+  &[data-state='open'][data-side='bottom'] {
+    animation-name: slide-up-and-fade;
+  }
+
+  &[data-state='open'][data-side='left'] {
+    animation-name: slide-right-and-fade;
   }
 `;
 
-const NavMenuSubContentStyled = styled(NavMenu.SubContent)`
+const PreviewSearchSuggestions = styled(PreviewSearch.Suggestions)`
   display: block;
-  width: 100%;
-  height: 100%;
-  position: relative;
   box-sizing: border-box;
-
-  &[data-orientation='vertical'] {
-  }
-  &[data-orientation='horizontal'] {
-    justify-items: center;
-    margin-top: -${theme.vars.spacing?.s};
-  }
-
-  & > div {
-    height: 100%;
-  }
-`;
-
-const NavMenuTriggerStyled = styled(NavMenu.Trigger)`
-  background: none;
-  border: 0;
-  display: inline-block;
-  font-size: ${theme.vars.typography?.fontSize1?.fontSize};
-  border-radius: 0;
-  padding: ${theme.vars.spacing?.s} ${theme.vars.spacing?.s};
-  position: relative;
-  width: 100%;
-  color: ${theme.vars.palette?.primary?.contrastText};
-  text-align: left;
-  &[data-state='open'] {
-    color: ${theme.vars.palette?.primary?.contrastText};
-    background: ${theme.vars.palette?.primary?.main};
-  }
-  &:focus {
-    outline: none;
-    font-weight: bold;
-    color: ${theme.vars.palette?.primary?.contrastText};
-    background: ${theme.vars.palette?.primary?.main};
-  }
-  &:hover {
-    cursor: pointer;
-    outline: none;
-    font-weight: bold;
-    color: ${theme.vars.palette?.primary?.contrastText};
-    background: ${theme.vars.palette?.primary?.main};
-  }
-`;
-
-const NavMenuDefaultTriggerStyled = styled(NavMenu.Trigger)`
-  visibility: hidden;
-`;
-
-const NavMenuGridStyled = styled(NavMenu.Content)`
-  display: inline-block;
-  left: 32%;
-  width: 68%;
-  position: absolute;
-  top: 0;
-  background: ${theme.vars.palette.primary.main};
-  height: 100%;
-  overflow-y: auto;
-`;
-
-const NavMenuSubListStyled = styled(NavMenu.List)`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   list-style: none;
-  margin: 0;
-  padding: ${theme.vars.spacing?.s};
-  gap: ${theme.vars.spacing?.m};
+  width: 16rem;
+  font-size: ${theme.vars.typography.fontSize1.fontSize};
+  background: var(--sdc-palette-primary-suggestionsBackground);
+  text-align: left;
 `;
 
-const NavMenuGroupStyled = styled(NavMenu.Item)``;
-const NavMenuDefaultGroupStyled = styled(NavMenu.Item)`
-  background: none;
-  border: 0;
-  height: 0;
-  overflow: hidden;
+const PreviewSearchSuggestionItem = styled(PreviewSearch.SuggestionItem)`
+  padding: ${theme.vars.spacing.s} ${theme.vars.spacing.s};
 
-  &:focus {
-    outline: 1px solid ${theme.vars.palette?.grey?.['400']};
+  &:focus,
+  &:hover {
+    outline: none;
+    font-weight: bold;
+    color: ${theme.vars.palette.primary.main};
+    background: var(--sdc-palette-primary-main);
   }
 `;
 
-const NavMenuSubItemStyled = styled(NavMenu.Item)`
-  display: inline;
-`;
-
-const NavMenuInputTriggerStyled = styled(NavMenu.InputTrigger)`
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  width: 100%;
-  padding: ${theme.vars.spacing?.xs};
-  height: 40px;
-  outline: none;
-  font-size: 24px;
+const PreviewSearchSuggestionTrigger = styled(PreviewSearch.SuggestionTrigger)`
+  cursor: pointer;
+  padding: ${theme.vars.spacing.s} ${theme.vars.spacing.s};
   color: ${theme.vars.palette.primary.contrastText};
+  &[data-state='active'],
+  &:focus,
+  &:hover {
+    outline: none;
+    font-weight: bold;
+    color: ${theme.vars.palette.primary.contrastText};
+    background: ${theme.vars.palette.primary.main};
+  }
 `;
 
-const NavMenuLinkStyled = styled(NavMenu.Link)`
-  color: ${theme.vars.palette?.primary?.main};
-  display: inline-block;
+const PreviewSearchSuggestionsGroup = styled(PreviewSearch.SuggestionsGroup)`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PreviewSearchLink = styled.a`
+  color: ${theme.vars.palette.primary.contrastText};
+  display: inline;
   box-sizing: border-box;
   text-decoration: none;
   width: 100%;
-  &:focus {
-    border-radius: 8px;
-    border: 1px solid ${theme.vars.palette?.grey?.['400']};
+`;
+
+const PreviewSearchItems = styled(PreviewSearch.Items)`
+  flex: 3;
+  overflow-y: auto;
+  display: flex;
+  background: var(--sdc-palette-secondary-main);
+  &[data-loading='false'] {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    list-style: none;
+    margin: 0;
+    padding: ${theme.vars.spacing.s};
+    gap: ${theme.vars.spacing.m};
   }
 `;
 
-export const NavMenuStyled = {
-  Root: NavMenuRootStyled,
-  MainList: NavMenuMainListStyled,
-  MainListItem: NavMenuMainListItemStyled,
-  GroupList: NavMenuGroupListStyled,
-  MainContent: NavMenuMainContentStyled,
-  SubContent: NavMenuSubContentStyled,
-  Trigger: NavMenuTriggerStyled,
-  DefaultTrigger: NavMenuDefaultTriggerStyled,
-  Grid: NavMenuGridStyled,
-  SubList: NavMenuSubListStyled,
-  SubItem: NavMenuSubItemStyled,
-  InputTrigger: NavMenuInputTriggerStyled,
-  Group: NavMenuGroupStyled,
-  DefaultGroup: NavMenuDefaultGroupStyled,
-  Link: NavMenuLinkStyled,
+const PreviewSearchRoot = styled(PreviewSearch.Root)``;
+const PreviewSearchItem = styled(PreviewSearch.Item)``;
+
+export const PreviewSearchStyled = {
+  Root: PreviewSearchRoot,
+  Input: PreviewSearchInput,
+  Content: PreviewSearchContent,
+  Items: PreviewSearchItems,
+  Item: PreviewSearchItem,
+  Suggestions: PreviewSearchSuggestions,
+  SuggestionsGroup: PreviewSearchSuggestionsGroup,
+  SuggestionItem: PreviewSearchSuggestionItem,
+  SuggestionTrigger: PreviewSearchSuggestionTrigger,
+  Link: PreviewSearchLink,
 };
 
-export const SearchGroupHeadingStyled = styled.h2`
-  box-sizing: border-box;
-  padding-left: ${theme.vars.spacing?.s};
-  color: ${theme.vars.palette.primary.contrastText};
-`;
-
 const ArticleRootStyled = styled(ArticleCard.Root)`
-  padding: ${theme.vars.spacing?.m};
+  padding: ${theme.vars.spacing?.s};
   cursor: pointer;
   display: block;
   border: solid 1px transparent;
   text-align: center;
-  height: 140px;
-  &:focus-within {
-    border: 1px solid ${theme.vars.palette?.primary?.main};
-  }
-  &:hover {
-    border: 1px solid ${theme.vars.palette?.primary?.main};
-  }
 `;
 
 const ArticleImageStyled = styled(ArticleCard.Image)`
@@ -262,7 +190,7 @@ const ArticleImageStyled = styled(ArticleCard.Image)`
 const ArticleImageWrapperStyled = styled.div`
   margin: auto auto 10px;
   position: relative;
-  height: 90px;
+  height: 6rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -270,12 +198,11 @@ const ArticleImageWrapperStyled = styled.div`
 `;
 
 const ArticleNameStyled = styled(ArticleCard.Title)`
-  max-height: 40px;
+  max-height: 2rem;
   overflow: hidden;
   margin: 0 0 ${theme.vars.spacing?.m};
-  color: ${theme.vars.palette?.primary?.contrastText};
   font-family: ${theme.vars.typography?.fontFamilySystem};
-  font-size: 13px;
+  font-size: 0.8rem;
   font-weight: ${theme.vars.typography?.fontSize4?.fontWeight};
 `;
 
@@ -292,9 +219,11 @@ const ArticleLinkStyled = styled.a`
   text-decoration: none;
   color: ${theme.vars.palette?.primary?.main};
   font-size: ${theme.vars.typography?.fontSize4?.fontSize};
+
   &:hover {
     text-decoration: none;
   }
+
   &:focus {
     text-decoration: none;
   }
@@ -309,10 +238,11 @@ export const ArticleCardStyled = {
   Name: ArticleNameStyled,
 };
 
+// misc
 export const LoaderContainer = styled.div`
   align-items: center;
   display: flex;
-  min-height: 50vh;
+  flex: 1;
 `;
 
 const Rotate = keyframes`
@@ -327,8 +257,14 @@ const Rotate = keyframes`
 export const LoaderAnimation = styled.svg`
   animation: ${Rotate} 2s linear infinite;
   display: block;
-  fill: ${theme.vars.palette?.primary?.main};
+  fill: ${theme.vars.palette.primary.main};
   height: 50px;
   margin: auto;
   width: 50px;
+`;
+
+export const SearchGroupHeadingStyled = styled.h2`
+  box-sizing: border-box;
+  padding-left: ${theme.vars.spacing.s};
+  color: ${theme.vars.palette.primary.contrastText};
 `;

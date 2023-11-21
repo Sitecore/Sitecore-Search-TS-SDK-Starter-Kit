@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { PageController, trackEntityPageViewEvent, trackPageViewEvent } from '@sitecore-search/react';
 
@@ -16,14 +16,13 @@ const withPageTracking =
   (Component: React.ElementType, pageType = PAGE_EVENTS_DEFAULT) =>
   (props: any) => {
     const uri = useUri();
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
+    const { id } = useParams();
 
     useEffect(() => {
       PageController.getContext().setPageUri(uri);
 
       if (id && pageType === PAGE_EVENTS_PDP) {
-        trackEntityPageViewEvent(ENTITY_CONTENT, [{ id }]);
+        trackEntityPageViewEvent(ENTITY_CONTENT, { items: [{ id }], actionSubtype: 'conversion' });
       } else {
         trackPageViewEvent(pageType);
       }

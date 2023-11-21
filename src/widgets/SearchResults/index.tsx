@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, GridIcon, ListBulletIcon } from '@radix-ui/react-icons';
 import { Presence } from '@radix-ui/react-presence';
 import type { SearchResultsInitialState, SearchResultsStoreState } from '@sitecore-search/react';
-import { WidgetDataType, useSearchResults, useSearchResultsSelectedFacets, widget } from '@sitecore-search/react';
+import { WidgetDataType, useSearchResults, useSearchResultsSelectedFilters, widget } from '@sitecore-search/react';
 import { AccordionFacets, CardViewSwitcher, Pagination, Select, SortSelect } from '@sitecore-search/ui';
 
 import type { ILanguageContext } from '../../contexts/languageContext';
 import { LanguageContext } from '../../contexts/languageContext';
 import { DEFAULT_IMAGE, HIGHLIGHT_DATA } from '../../data/constants';
-import useSortingOptions from '../../hooks/useSortingOptions';
 import type { ArticleModel } from '../utils';
 import { HighlightComponent, getDescription } from '../utils';
 import {
@@ -54,7 +53,7 @@ export const SearchResultsWithLayoutOptionComponent = ({
       onResultsPerPageChange,
       onPageNumberChange,
       onItemClick,
-      onFilterClick,
+      onRemoveFilter,
       onSortChange,
       onFacetClick,
       onClearFilters,
@@ -88,7 +87,7 @@ export const SearchResultsWithLayoutOptionComponent = ({
   });
   const totalPages = Math.ceil(totalItems / (itemsPerPage !== 0 ? itemsPerPage : 1));
   const selectedSortIndex = sortChoices.findIndex((s) => s.name === sortType);
-  const selectedFacetsFromApi = useSearchResultsSelectedFacets();
+  const selectedFacetsFromApi = useSearchResultsSelectedFilters();
   const defaultCardView = CardViewSwitcher.CARD_VIEW_LIST;
   const [dir, setDir] = useState(defaultCardView);
   const onToggle = (value = defaultCardView) => setDir(value);
@@ -135,22 +134,18 @@ export const SearchResultsWithLayoutOptionComponent = ({
                     <FiltersStyled.ClearFilters onClick={onClearFilters}>Clear Filters</FiltersStyled.ClearFilters>
                   )}
                   <FiltersStyled.SelectedFiltersList>
-                    {selectedFacetsFromApi.map((selectedFacet) =>
-                      selectedFacet.values.map((v) => (
-                        <FiltersStyled.SelectedFiltersListItem key={`${selectedFacet.id}@${v.id}`}>
-                          <FiltersStyled.SelectedFiltersListItemText>
-                            {selectedFacet.name}: {v.text}
-                          </FiltersStyled.SelectedFiltersListItemText>
-                          <FiltersStyled.SelectedFiltersListItemButton
-                            onClick={() =>
-                              onFilterClick({ facetId: selectedFacet.id, facetValueId: v.id, checked: false })
-                            }
-                          >
-                            X
-                          </FiltersStyled.SelectedFiltersListItemButton>
-                        </FiltersStyled.SelectedFiltersListItem>
-                      )),
-                    )}
+                    {selectedFacetsFromApi.map((selectedFacet) => (
+                      <FiltersStyled.SelectedFiltersListItem
+                        key={`${selectedFacet.facetId}${selectedFacet.facetLabel}${selectedFacet.valueLabel}`}
+                      >
+                        <FiltersStyled.SelectedFiltersListItemText>
+                          {selectedFacet.facetLabel}: {selectedFacet.valueLabel}
+                        </FiltersStyled.SelectedFiltersListItemText>
+                        <FiltersStyled.SelectedFiltersListItemButton onClick={() => onRemoveFilter(selectedFacet)}>
+                          X
+                        </FiltersStyled.SelectedFiltersListItemButton>
+                      </FiltersStyled.SelectedFiltersListItem>
+                    ))}
                   </FiltersStyled.SelectedFiltersList>
                   <AccordionFacetsStyled.Root
                     defaultFacetTypesExpandedList={[]}
