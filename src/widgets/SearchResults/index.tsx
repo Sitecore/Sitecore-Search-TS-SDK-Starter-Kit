@@ -9,7 +9,7 @@ import { AccordionFacets, CardViewSwitcher, Pagination, Select, SortSelect } fro
 
 import type { ILanguageContext } from '../../contexts/languageContext';
 import { LanguageContext } from '../../contexts/languageContext';
-import { DEFAULT_IMAGE, HIGHLIGHT_DATA } from '../../data/constants';
+import { DEFAULT_IMAGE, HIGHLIGHT_DATA, SEARCH_SOURCE } from '../../data/constants';
 import type { ArticleModel } from '../utils';
 import { HighlightComponent, getDescription } from '../utils';
 import {
@@ -77,6 +77,10 @@ export const SearchResultsWithLayoutOptionComponent = ({
         .setSearchQueryHighlightFields(['subtitle', 'description'])
         .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
         .setSearchQueryHighlightPostTag(HIGHLIGHT_DATA.post);
+
+      if (SEARCH_SOURCE != '') {
+        query.getRequest().addSource(SEARCH_SOURCE) ;
+      }
     },
     state: {
       sortType: defaultSortType,

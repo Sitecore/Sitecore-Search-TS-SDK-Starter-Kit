@@ -6,7 +6,7 @@ import type { PreviewSearchInitialState } from '@sitecore-search/react';
 import { WidgetDataType, usePreviewSearch, widget } from '@sitecore-search/react';
 import { Presence, PreviewSearch } from '@sitecore-search/ui';
 
-import { DEFAULT_IMAGE, HIGHLIGHT_DATA } from '../../data/constants';
+import { DEFAULT_IMAGE, HIGHLIGHT_DATA, SEARCH_SOURCE } from '../../data/constants';
 import type { ArticleModel } from '../utils';
 import { HighlightComponent, getDescription } from '../utils';
 import {
@@ -37,6 +37,10 @@ export const PreviewSearchNewComponent = ({ defaultItemsPerPage = 8 }) => {
         .setSearchQueryHighlightFields(['title', 'description'])
         .setSearchQueryHighlightPreTag(HIGHLIGHT_DATA.pre)
         .setSearchQueryHighlightPostTag(HIGHLIGHT_DATA.post);
+
+        if (SEARCH_SOURCE != '') {
+          query.getRequest().addSource(SEARCH_SOURCE) ;
+        }
     },
     state: {
       suggestionsList: [{ suggestion: 'title_context_aware', max: 10 }],

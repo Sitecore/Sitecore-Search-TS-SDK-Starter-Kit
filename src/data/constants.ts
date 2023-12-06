@@ -14,6 +14,7 @@ export const HIGHLIGHT_DATA: {
 };
 
 export const BASE_PATH = import.meta.env.VITE_SEARCH_PATH || '';
+export const SEARCH_SOURCE = import.meta.env.VITE_SEARCH_SOURCE || '';
 export const PAGE_EVENTS_DEFAULT = 'page';
 export const PAGE_EVENTS_HOME = 'home';
 export const PAGE_EVENTS_PDP = 'pdp';

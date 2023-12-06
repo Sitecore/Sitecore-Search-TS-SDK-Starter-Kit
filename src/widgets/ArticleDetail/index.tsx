@@ -3,7 +3,7 @@ import React from 'react';
 import type { SearchResultsInitialState } from '@sitecore-search/react';
 import { FilterEqual, WidgetDataType, useSearchResults, widget } from '@sitecore-search/react';
 
-import { DEFAULT_IMAGE } from '../../data/constants';
+import { DEFAULT_IMAGE, SEARCH_SOURCE } from '../../data/constants';
 import type { ArticleModel } from '../utils';
 import {
   DetailDescription,
@@ -29,6 +29,10 @@ export const ArticleDetailComponent = ({ id }: ArticleDetailProps): JSX.Element 
     query: (query) => {
       const equalFilter = new FilterEqual('id', id);
       query.getRequest().setSearchFilter(equalFilter);
+      
+      if (SEARCH_SOURCE != '') {
+        query.getRequest().addSource(SEARCH_SOURCE) ;
+      }
     },
     state: {
       itemsPerPage: 1,

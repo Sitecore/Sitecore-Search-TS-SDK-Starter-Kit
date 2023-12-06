@@ -5,6 +5,7 @@ import { FilterEqual, WidgetDataType, useSearchResults, widget } from '@sitecore
 import { Row } from '../../components/Common';
 import { getContentIcon } from '../../components/Icons';
 import { ArticleCard, ArticleCardContent, ArticleCardImage } from './styled';
+import { SEARCH_SOURCE } from '../../data/constants';
 
 export const HomeHighlightedComponent = (): JSX.Element => {
   const {
@@ -13,6 +14,10 @@ export const HomeHighlightedComponent = (): JSX.Element => {
   } = useSearchResults({
     query: (query) => {
       query.getRequest().setSearchFilter(new FilterEqual('type', 'Blogs'));
+
+      if (SEARCH_SOURCE != '') {
+        query.getRequest().addSource(SEARCH_SOURCE) ;
+      }
     },
   });
   const articlesToShow = articles.slice(0, 3);
