@@ -1,7 +1,3 @@
-import React from 'react';
-
-import type { HighlightTag } from '../data/types';
-
 type HighlightModel = {
   description?: Array<string>;
   subtitle?: Array<string>;

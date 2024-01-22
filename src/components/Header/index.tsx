@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
-import { ThemeContext } from '../../contexts/theme-context';
-import type { IThemeContext } from '../../contexts/theme-context';
+import { ThemeContext } from '../../contexts/themeContext';
+import type { IThemeContext } from '../../contexts/themeContext';
 import HeaderInput from '../HeaderInput';
 import Logo from '../Icons/Logo';
 import LocaleSelector from '../LocaleSelector';
