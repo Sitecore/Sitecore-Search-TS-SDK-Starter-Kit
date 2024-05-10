@@ -25,14 +25,21 @@ const SearchPageTitle = styled.h2`
 
 const Search = (): JSX.Element => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
-
+  const query = searchParams.get('q') || '*';
+  const pageNumber = parseInt(searchParams.get('page') || '1');
+  const facetsToDisplay = [{ name: 'product' }, { name: 'type' }];
   return (
     <SearchPageSection>
       <div>
         <SearchPageTitle>{`Showing results for "${query}"`}</SearchPageTitle>
         <Questions key={`${query}-questions`} rfkId="rfkid_qa" keyphrase={query} defaultRelatedQuestions={4} />
-        <SearchResults key={`${query}-search`} rfkId="rfkid_7" defaultKeyphrase={query} />
+        <SearchResults
+          key={`${query}-search`}
+          rfkId="rfkid_7"
+          facetsToDisplay={facetsToDisplay}
+          defaultKeyphrase={query}
+          defaultPage={pageNumber}
+        />
       </div>
     </SearchPageSection>
   );

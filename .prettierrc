@@ -1,6 +1,7 @@
 {
   "printWidth": 120,
   "trailingComma": "all",
+  "endOfLine": "auto",
   "semi": true,
   "singleQuote": true,
   "quoteProps": "consistent",

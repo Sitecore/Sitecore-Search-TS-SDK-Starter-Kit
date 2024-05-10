@@ -1,3 +1,6 @@
+import type { NavigateFunction } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 type HighlightModel = {
   description?: Array<string>;
   subtitle?: Array<string>;
@@ -56,4 +59,83 @@ export const HighlightComponent = ({
     );
   }
   return <>{text}</>; // means that separator is not in the text
+};
+
+export const generateQueryString = (baseUrl: string, params: { [key: string]: string }): string => {
+  const urlObj = new URL(baseUrl, 'http://dummybase'); // Using a dummy base to handle relative URLs
+  const existingParams = new URLSearchParams(urlObj.search);
+  // Update existing parameters and add new parameters
+  for (const [key, value] of Object.entries(params)) {
+    if (!existingParams.has(key)) {
+      // Add new parameter
+      if (!value) {
+        existingParams.delete(key);
+      } else {
+        existingParams.append(key, value);
+      }
+    } else {
+      // Update existing parameter
+      if (!value) {
+        existingParams.delete(key);
+      } else {
+        existingParams.set(key, value);
+      }
+    }
+  }
+
+  // Set the updated search parameters
+  urlObj.search = existingParams.toString();
+
+  // Remove the dummy base and return the relative URL
+  return urlObj.pathname + urlObj.search + urlObj.hash;
+};
+
+export const getQueryParam = (queryString: string, key: string): string | null => {
+  const queryParams = new URLSearchParams(queryString.replace('/', ''));
+  return queryParams.get(key);
+};
+
+export const paramsToObject = (entries: IterableIterator<[string, string]>) => {
+  const result = {} as any;
+  for (const [key, value] of entries) {
+    // each 'entry' is a [key, value] tupple
+    result[key] = value;
+  }
+  return result;
+};
+
+export const urlParamsUpdateOnLocaleChange = (router: NavigateFunction, lang: string) => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchParamsObject = paramsToObject(queryParams.entries()) as any;
+  searchParamsObject.lang = lang;
+  // eslint-disable-next-line eqeqeq
+  if (searchParamsObject.page != undefined) {
+    searchParamsObject.page = '1';
+  }
+  const updatedRelativeUrl = generateQueryString('/', searchParamsObject);
+  router(updatedRelativeUrl);
+};
+
+export const urlParamsUpdateOnInputChange = (router: NavigateFunction, text: string) => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchParamsObject = paramsToObject(queryParams.entries()) as any;
+  searchParamsObject.q = text;
+  // eslint-disable-next-line eqeqeq
+  if (searchParamsObject.page != undefined) {
+    searchParamsObject.page = '1';
+  }
+  const updatedRelativeUrl = generateQueryString('/', searchParamsObject);
+  router(updatedRelativeUrl);
+};
+
+export const removeDuplicates = (arr: string[]) => {
+  const unique: string[] = [];
+  arr.forEach((element: string) => {
+    if (!unique.includes(element)) {
+      unique.push(element);
+    }
+  });
+  return unique;
 };
