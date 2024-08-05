@@ -31,7 +31,7 @@ const LocaleSelector = (): JSX.Element => {
   return (
     <LocaleSelectorWrapper>
       <LocaleSelectorIcon
-        src="https://wwwsitecorecom.azureedge.net/-/media/newnavigation/icon-language.svg"
+        src="https://sitecoredemojp.sitecoresandbox.cloud/api/public/content/66478b7042fd4107bdf35fc45b5331d1?v=40fea270"
         alt="Locale Selector"
       />
       <Select onChange={handleChange} options={locales} defaultValue={locales[selectedIndex]} styles={colourStyles} />
