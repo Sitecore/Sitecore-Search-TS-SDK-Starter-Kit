@@ -9,7 +9,7 @@ const Footer = (): JSX.Element => {
         {footerData.map((list, index) => (
           <div
             key={`${list.mainTitle}-${index}`}
-            className="flex-grow-0 flex-shrink-0 basis-[25%] max-w-[25%] text-left"
+            className="flex-grow-0 flex-shrink-0 basis-[25%] max-w-[20%] text-left"
           >
             <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-[30px]">{list.mainTitle}</h4>
             <ul>
