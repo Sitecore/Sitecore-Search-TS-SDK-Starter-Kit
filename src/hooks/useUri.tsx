@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-import { BASE_PATH } from '../data/constants';
+import { BASE_PATH } from '@/data/constants';
 
 const useUri = () => {
   const location = useLocation();

@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 
+import locales from '@/data/locales';
+import useStorage from '@/hooks/useStorage';
 import { PageController } from '@sitecore-search/react';
-
-import locales from '../data/locales';
-import useStorage from './useStorage';
 
 /**
  * Custom hook for managing the language state.

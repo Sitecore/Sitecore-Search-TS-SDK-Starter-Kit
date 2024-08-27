@@ -1,37 +1,25 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { ThemeContext } from '../../contexts/themeContext';
-import type { IThemeContext } from '../../contexts/themeContext';
-import HeaderInput from '../HeaderInput';
-import Logo from '../Icons/Logo';
-import LocaleSelector from '../LocaleSelector';
-import { HeaderContent, HeaderContentWrapper, HeaderWrapper } from './styled';
+import { DarkmodeSwitch } from '@/components/DarkModeSwitcher';
+import LocaleSelector from '@/components/LocaleSelector';
+import Logo from '@/components/Logo';
+import PreviewSearch from '@/widgets/PreviewSearch';
 
 const Header = (): JSX.Element => {
-  const navigate = useNavigate();
-  const { theme, setTheme } = useContext<IThemeContext>(ThemeContext);
-  const toggleDarkMode = (checked: boolean): void => {
-    if (checked) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  };
   return (
-    <HeaderWrapper>
-      <HeaderContentWrapper>
-        <HeaderContent>
-          <a href="#" onClick={() => navigate(``)} tabIndex={1}>
+    <div className="header-outer">
+      <div className="header-inner">
+        <div className="flex items-center justify-between">
+          <Link to="/" tabIndex={1}>
             <Logo />
-          </a>
-          <HeaderInput />
-          <DarkModeSwitch checked={theme === 'dark'} onChange={toggleDarkMode} />
+          </Link>
+          <PreviewSearch rfkId="rfkid_6" />
+          <DarkmodeSwitch />
           <LocaleSelector />
-        </HeaderContent>
-      </HeaderContentWrapper>
-    </HeaderWrapper>
+        </div>
+      </div>
+    </div>
   );
 };
 
