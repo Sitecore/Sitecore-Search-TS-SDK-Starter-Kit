@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.sitecore.com/">
-    <img src="https://wwwsitecorecom.azureedge.net/-/media/sitecoresite/images/global/logo/sitecore-logo.svg?la=es-ES&hash=89E5BCF25116F0D8B53F53F0E3D33A0E" alt="RBE logo" target="_blank" width="200" height="165">
+    <img src="https://delivery-sitecore.sitecorecontenthub.cloud/api/public/content/logo-sitecore?t=sc42h" alt="Sitecore logo" target="_blank" width="200" height="165">
   </a>
 </p>
 <h3 align="center">Sitecore Search Starter Kit</h3>
@@ -41,10 +41,8 @@ The Sitecore Search Starter Kit needs some environment variables to work. You ca
 The following variables should exist within the **.env** file:
 
 ```
-VITE_SEARCH_ENV=<environment - Expected values: prod, staging, prodEu or apse2 >
 VITE_SEARCH_CUSTOMER_KEY=<customer key>
 VITE_SEARCH_API_KEY=<API key provided in CEC>
-VITE_SEARCH_PATH=<Path for the site>. This variable is optional, use it only if the site domain also includes an extra path.
 ```
 
 ### CEC configuration
@@ -72,16 +70,15 @@ Sorting options must include `featured_desc` and `feature_asc` criteria pre-conf
 
 The account must have the following widgets created before:
 
-| Name                                 | ID                              | Type           | Description                                                                                                                                                                                   | Used in                |
-|--------------------------------------|---------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| [Search Results Page] Search Results | `rfkid_7`                         | `Search Results` | Search results widget. Will include a grid with the results together with the avility to filter results by different facets.                                                                  | `/search`, `/detail/*` |
-| Preview Search                       | `rfkid_6`                         | `Preview Search` | It is an input that does a quick search over the content. It is included on the page header.                                                                                                  | Every page             |
-| SEO                                  | `search_seo`                      | `SEO`           | A SEO widget.                                                                                                                                                                                 | Every page             |
-| Home Hero                            | `home_hero`                      | `HTML Block`     | An html block that appears at the home hero. It has rules to show content dependending on the language selected.                                                                              | `/`                    |
-| FAQs Title                           | `faqs_title`                      | `HTML Block`     | An html block with the title of the "Frequently asked questions" section.                                                                                                                     | `/`                    |
-| Highlight Title                      | `highlight_title`                 | `HTML Block`     | An html block with the title of the "Highlighted Articles" section.                                                                                                                           | `/`                    |
-| Search Home Highlights Articles      | `search_home_highlights_articles` | `Search Results` | Search Results widget used on the "Highlighted Articles section".                                                                                                                             | `/`                    |
-| N/A                                  | `rfkid_qa`                        | `Questions`      | This widget appears on the home page, used on the "Frequently Asked Questions" or in the search page. Please ask for support if this does not appears as it is still an experimental feature (This type of widget can't be created on CEC as well). | `/` , `/search`        |
+| Name                                 | ID                              | Type           | Description                                                                                                                                                                                                                            | Used in                |
+|--------------------------------------|---------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| [Search Results Page] Search Results | `rfkid_7`                         | `Search Results` | Search results widget. Will include a grid with the results together with the avility to filter results by different facets.                                                                                                           | `/search`, `/detail/*` |
+| Preview Search                       | `rfkid_6`                         | `Preview Search` | It is an input that does a quick search over the content. It is included on the page header.                                                                                                                                           | Every page             |
+| SEO                                  | `search_seo`                      | `SEO`           | A SEO widget.                                                                                                                                                                                                                          | Every page             |
+| Home Hero                            | `home_hero`                      | `HTML Block`     | An html block that appears at the home hero. It has rules to show content dependending on the language selected.                                                                                                                       | `/`                    |
+| Highlight Title                      | `highlight_title`                 | `HTML Block`     | An html block with the title of the "Highlighted Articles" section.                                                                                                                                                                    | `/`                    |
+| Search Home Highlights Articles      | `search_home_highlights_articles` | `Search Results` | Search Results widget used on the "Highlighted Articles section".                                                                                                                                                                      | `/`                    |
+| N/A                                  | `rfkid_qa`                        | `Questions`      | This widget appears in the search page if the keyphase sent is recognized as a question. Please ask for support if this does not appears as it is still an experimental feature (This type of widget can't be created on CEC as well). | `/` , `/search`        |
 
 Please, check our [demo website](https://developers.sitecorecloud.io/search-sdk/react/website) to check and visualize the different widgets. 
 
@@ -93,10 +90,8 @@ To start using `Sitecore Search Starter Kit`:
 3. In the repository, to install all dependencies, run `npm install`.
 4. In the root of the project, create a `.env` file then add the following environment variables to it:
 ```
-VITE_SEARCH_ENV=<environment - Expected values: prod, staging or prodEu >
 VITE_SEARCH_CUSTOMER_KEY=<customer key>
 VITE_SEARCH_API_KEY=<API key provided in CEC>
-VITE_SEARCH_PATH=<Path for the site> (optional)
 ```
 
 5.  To start the development server, run `npm run dev`.
@@ -124,8 +119,7 @@ Route: `/` shows the main page of the site.
 The home page has the following configuration:
 
 - 1st section: it is a content block with a locale rule to change the content if you switch the language.
-- 2nd section: a content block with the title (Frequently asked questions) with the same rule than 1st section. It also has a `questions` widget below that only shows some questions based on a specific keyphrase.
-- 3rd section: a content block with the title (same mechanism than 2nd section) and a `search` widget with a filter applied (type = blogs).
+- 2nd section: a content block with the title (same mechanism than 2nd section) and a `search` widget with a filter applied (type = blogs).
 
 Events tracked are:
 
