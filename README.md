@@ -38,12 +38,24 @@ The Search Starter Kit needs to have Node.js installed to build the project. We 
 
 The Sitecore Search Starter Kit needs some environment variables to work. You can get the values for them in the [Developers resources section](https://doc.sitecore.com/discover/en/developers/discover-developer-guide/index_en.html?contextId=apiaccess) of Customer Engagement Console (CEC). For full functionality, create a **.env** file in the root of the project and add the following environment variables.
 
-The following variables should exist within the **.env** file:
+The following variables should exist within the **.env** file. You can copy `.env.example` to `.env` and fill in your values:
 
+```bash
+# Unix/Mac/Linux
+cp .env.example .env
+
+# Windows
+copy .env.example .env
 ```
-VITE_SEARCH_CUSTOMER_KEY=<customer key>
-VITE_SEARCH_API_KEY=<API key provided in CEC>
-```
+
+Required environment variables:
+
+- `VITE_SEARCH_ENV` - Environment where data should be gathered. Possible values:
+  - `apse2` - For Asia/Oceania domains
+  - `prodEu` - For European domains
+  - `prod` - For US domains
+- `VITE_SEARCH_CUSTOMER_KEY` - Your customer key from CEC
+- `VITE_SEARCH_API_KEY` - API key provided in CEC
 
 ### CEC configuration
 
@@ -88,11 +100,15 @@ To start using `Sitecore Search Starter Kit`:
 1. Install [Node.js](htts://nodejs.org/en/). We recommend the LTS version.
 2. Clone the repository: `git clone git@github.com:Sitecore/Sitecore-Search-JS-SDK-Starter-Kit.git`.
 3. In the repository, to install all dependencies, run `npm install`.
-4. In the root of the project, create a `.env` file then add the following environment variables to it:
+4. Copy the `.env.example` file to `.env` and fill in your Sitecore Search credentials:
+```bash
+# Unix/Mac/Linux
+cp .env.example .env
+
+# Windows
+copy .env.example .env
 ```
-VITE_SEARCH_CUSTOMER_KEY=<customer key>
-VITE_SEARCH_API_KEY=<API key provided in CEC>
-```
+Then edit `.env` with your environment, customer key, and API key from CEC.
 
 5.  To start the development server, run `npm run dev`.
 6.  To view the site, open your browser to **http://localhost:5174**

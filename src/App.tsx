@@ -15,8 +15,8 @@ import { SEOWidget, WidgetsProvider } from '@sitecore-search/react';
  * It uses Vite environment variables.
  * @see https://vitejs.dev/guide/env-and-mode.html
  */
-const SEARCH_CONFIG = {
-  env: import.meta.env.VITE_SEARCH_ENV,
+const SEARCH_CONFIG: SearchConfig = {
+  env: import.meta.env.VITE_SEARCH_ENV as SearchEnvironment,
   customerKey: import.meta.env.VITE_SEARCH_CUSTOMER_KEY,
   apiKey: import.meta.env.VITE_SEARCH_API_KEY,
 };
