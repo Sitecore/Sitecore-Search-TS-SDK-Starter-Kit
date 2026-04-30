@@ -1,9 +1,8 @@
 # Sitecore Search Starter Kit
 
 **Service:** sitecore-search-starter-kit  
-**Product Owner:** <!-- [TODO:Q1] Not found in repo — add GitHub handle -->  
-**Architect:** <!-- [TODO:Q2] Not found in repo — add GitHub handle -->  
-**JIRA:** <!-- [TODO:Q3] Add Jira board link -->  
+**Product Owner:** team/search
+**Repository:** https://github.com/Sitecore/Sitecore-Search-TS-SDK-Starter-Kit.git 
 **Last Updated:** 2026-04-30  
 **Lifecycle:** Production  
 **Type:** Frontend (React SPA)
